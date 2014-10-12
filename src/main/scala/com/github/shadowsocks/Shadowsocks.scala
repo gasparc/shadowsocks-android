@@ -54,6 +54,7 @@ import android.util.{DisplayMetrics, Log}
 import android.view._
 import android.webkit.{WebView, WebViewClient}
 import android.widget._
+import android.preference.Preference.OnPreferenceClickListener
 import com.github.shadowsocks.aidl.{IShadowsocksService, IShadowsocksServiceCallback}
 import com.github.shadowsocks.database._
 import com.github.shadowsocks.preferences.{PasswordEditTextPreference, ProfileEditTextPreference, SummaryEditTextPreference}
@@ -449,6 +450,22 @@ class Shadowsocks
 
     addPreferencesFromResource(R.xml.pref_all)
 
+	// Scans QR Code
+	val qrCodePref = findPreference("QRbutton")
+	qrCodePref.setOnPreferenceClickListener(new OnPreferenceClickListener {	
+	override def onPreferenceClick(preference: Preference) = {
+    val h = showProgress(getString(R.string.loading))
+            h.postDelayed(new Runnable() {
+              def run() {
+                val integrator = new IntentIntegrator(Shadowsocks.this)
+                integrator.initiateScan()
+                h.sendEmptyMessage(0)
+              }
+            }, 600)
+	true
+	}
+	})
+	
     // Initialize the profile
     currentProfile = {
       profileManager.getProfile(settings.getInt(Key.profileId, -1)) getOrElse currentProfile
@@ -553,7 +570,8 @@ class Shadowsocks
   }
 
   def newProfile(id: Int) {
-
+	addProfile(id)
+	/*
     val builder = new AlertDialog.Builder(this)
     builder
       .setTitle(R.string.add_profile)
@@ -577,7 +595,7 @@ class Shadowsocks
         }
       }
     })
-    builder.create().show()
+    builder.create().show()*/
   }
 
   def addProfile(profile: Profile) {
@@ -687,7 +705,7 @@ class Shadowsocks
 
     buf += new Category(getString(R.string.settings))
 
-    buf += new Item(-100, getString(R.string.recovery), android.R.drawable.ic_menu_revert, _ => {
+    /*buf += new Item(-100, getString(R.string.recovery), android.R.drawable.ic_menu_revert, _ => {
       // send event
       application.tracker.send(new HitBuilders.EventBuilder()
         .setCategory(Shadowsocks.TAG)
@@ -695,7 +713,7 @@ class Shadowsocks
         .setLabel(getVersionName)
         .build())
       recovery()
-    })
+    })*/
 
     buf +=
       new Item(-200, getString(R.string.flush_dnscache), android.R.drawable.ic_menu_delete, _ => {
