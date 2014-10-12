@@ -59,6 +59,7 @@ import org.apache.http.conn.util.InetAddressUtils
 import scala.collection._
 import scala.collection.mutable.ArrayBuffer
 import scala.concurrent.ops._
+import com.github.shadowsocks.dpfwds._
 
 case class TrafficStat(tx: Long, rx: Long, timestamp: Long)
 
@@ -106,7 +107,10 @@ class ShadowsocksNatService extends Service with BaseService {
       }
   }
 
+  var dpfwds: Option[DPfwdS] = None
+  
   def startShadowsocksDaemon() {
+  /*
     if (isACLEnabled && config.isGFWList) {
       val chn_list: Array[String] = getResources.getStringArray(R.array.chn_list_full)
       ConfigUtils.printToFile(new File(Path.BASE + "chn.acl"))(p => {
@@ -123,15 +127,31 @@ class ShadowsocksNatService extends Service with BaseService {
           , "-k" , config.sitekey
           , "-m" , config.encMethod
           , "-f" , (Path.BASE + "ss-local.pid"))
-
-    if (config.isGFWList && isACLEnabled) {
+		  
+	if (config.isGFWList && isACLEnabled) {
       cmd += "--acl"
       cmd += (Path.BASE + "chn.acl")
     }
-
+	
     if (BuildConfig.DEBUG) Log.d(TAG, cmd.mkString(" "))
 
-    Core.sslocal(cmd.toArray)
+    Core.sslocal(cmd.toArray)	
+*/
+	dpfwds.map{ _dpfwds =>
+              _dpfwds.terminate
+              dpfwds = None
+	    } orElse {
+			  val _dpfwds = new DPfwdS(bindAddress = "127.0.0.1",
+								socksPort = config.localPort, 
+								user = config.encMethod, 
+								host = config.proxy, 
+								sshPort = config.remotePort, 
+								passwd = Some(config.sitekey.mkString))
+  
+              _dpfwds.start
+              dpfwds = Some(_dpfwds)
+              dpfwds
+	    }		
   }
 
   def startDnsDaemon() {
@@ -168,7 +188,7 @@ class ShadowsocksNatService extends Service with BaseService {
       }
       if (BuildConfig.DEBUG) Log.d(TAG, cmd)
       Console.runRootCommand(cmd)
-    }
+    }	
   }
 
   def getVersionName: String = {
@@ -201,7 +221,7 @@ class ShadowsocksNatService extends Service with BaseService {
   /** Called when the activity is first created. */
   def handleConnection: Boolean = {
 
-    startDnsDaemon()
+    //startDnsDaemon()
     startRedsocksDaemon()
     startShadowsocksDaemon()
     setupIptables()
@@ -313,6 +333,11 @@ class ShadowsocksNatService extends Service with BaseService {
     ab.append("kill -9 `cat " + Path.BASE + "ss-local.pid`")
 
     Console.runCommand(ab.toArray)
+	
+	dpfwds.map{ _dpfwds =>
+              _dpfwds.terminate
+              dpfwds = None
+	}		
   }
 
   def flushDNS() {

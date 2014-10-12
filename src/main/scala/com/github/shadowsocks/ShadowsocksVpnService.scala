@@ -57,6 +57,7 @@ import org.apache.http.conn.util.InetAddressUtils
 
 import scala.collection.mutable.ArrayBuffer
 import scala.concurrent.ops._
+import com.github.shadowsocks.dpfwds._
 
 class ShadowsocksVpnService extends VpnService with BaseService {
 
@@ -80,7 +81,9 @@ class ShadowsocksVpnService extends VpnService with BaseService {
   }
 
   def startShadowsocksDaemon() {
+  
     val cmd = new ArrayBuffer[String]
+	/*
     cmd += ("ss-local" , "-u"
             , "-b" , "127.0.0.1"
             , "-s" , config.proxy
@@ -91,7 +94,27 @@ class ShadowsocksVpnService extends VpnService with BaseService {
             , "-f" , (Path.BASE + "ss-local.pid"))
     if (BuildConfig.DEBUG) Log.d(TAG, cmd.mkString(" "))
     Core.sslocal(cmd.toArray)
-  }
+	*/
+	
+		var dpfwds: Option[DPfwdS] = None
+		
+		dpfwds.map{ _dpfwds =>
+				  _dpfwds.terminate
+				  dpfwds = None
+			} orElse {
+				  val _dpfwds = new DPfwdS(bindAddress = "127.0.0.1",
+									socksPort = config.localPort, 
+									user = config.encMethod, 
+									host = config.proxy, 
+									sshPort = config.remotePort, 
+									passwd = Some(config.sitekey.mkString))
+	  
+				  _dpfwds.start
+				  dpfwds = Some(_dpfwds)
+				  dpfwds
+			}	
+
+  }	
 
   def startDnsDaemon() {
     val conf = {
@@ -249,7 +272,7 @@ class ShadowsocksVpnService extends VpnService with BaseService {
     ab.append("kill -9 `cat " + Path.BASE + "tun2socks.pid`")
     ab.append("kill -15 `cat " + Path.BASE + "pdnsd.pid`")
 
-    Console.runCommand(ab.toArray)
+    Console.runCommand(ab.toArray)			  
   }
 
   override def startRunner(c: Config) {
