@@ -703,7 +703,7 @@ class Shadowsocks
     buf +=
       new Item(-400, getString(R.string.add_profile), android.R.drawable.ic_menu_add, newProfile)
 
-    buf += new Category(getString(R.string.settings))
+    buf += new Category(getString(R.string.help))
 
     /*buf += new Item(-100, getString(R.string.recovery), android.R.drawable.ic_menu_revert, _ => {
       // send event
@@ -713,7 +713,7 @@ class Shadowsocks
         .setLabel(getVersionName)
         .build())
       recovery()
-    })*/
+    })
 
     buf +=
       new Item(-200, getString(R.string.flush_dnscache), android.R.drawable.ic_menu_delete, _ => {
@@ -724,8 +724,18 @@ class Shadowsocks
           .setLabel(getVersionName)
           .build())
         flushDnsCache()
-      })
+      })*/
 
+    buf += new Item(-300, getString(R.string.howto), android.R.drawable.ic_menu_info_details, _ => {
+      // send event
+      application.tracker.send(new HitBuilders.EventBuilder()
+        .setCategory(Shadowsocks.TAG)
+        .setAction("howto")
+        .setLabel(getVersionName)
+        .build())
+      showHowTo()
+	}) 
+	
     buf += new Item(-300, getString(R.string.about), android.R.drawable.ic_menu_info_details, _ => {
       // send event
       application.tracker.send(new HitBuilders.EventBuilder()
@@ -951,6 +961,38 @@ class Shadowsocks
     true
   }
 
+  private def showHowTo() {
+
+    val web = new WebView(this)
+    web.loadUrl("file:///android_asset/pages/howto.html")
+    web.setWebViewClient(new WebViewClient() {
+      override def shouldOverrideUrlLoading(view: WebView, url: String): Boolean = {
+        startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse(url)))
+        true
+      }
+    })
+
+    var versionName = ""
+    try {
+      versionName = getPackageManager.getPackageInfo(getPackageName, 0).versionName
+    } catch {
+      case ex: PackageManager.NameNotFoundException =>
+        versionName = ""
+    }
+
+    new AlertDialog.Builder(this)
+      .setTitle("How to use?")
+      .setCancelable(false)
+      .setNegativeButton(getString(R.string.ok_iknow), new DialogInterface.OnClickListener() {
+      override def onClick(dialog: DialogInterface, id: Int) {
+        dialog.cancel()
+      }
+    })
+      .setView(web)
+      .create()
+      .show()
+  }
+  
   private def showAbout() {
 
     val web = new WebView(this)

@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-  <string name="app_name">Shadowsocks</string>
-  <string name="screen_name">shadowsocks</string>
+  <string name="app_name">TunnelAr</string>
+  <string name="screen_name">TunnelAr</string>
 
   <!-- function category -->
   <string name="function_cat">Service Controller</string>
@@ -24,7 +24,7 @@
   <string name="port_summary">Port number of your Shadowsocks client</string>
   <string name="sitekey">Password</string>
   <string name="sitekey_summary">Password of your Shadowsocks server</string>
-  <string name="enc_method">Encrypt Method</string>
+  <string name="enc_method">Username</string>
 
   <!-- feature category -->
   <string name="feature_cat">Feature Settings</string>
@@ -86,7 +86,9 @@
   <string name="flush_dnscache">Flush DNS Cache</string>
   <string name="flushing">Flushing</string>
   <string name="add_profile">Add Profile</string>
-
+  <string name="help">Help</string>
+  <string name="howto">How to use?</string>
+  
   <!-- profile -->
   <string name="add_profile_dialog">Add this Shadowsocks Profile?</string>
   <string-array name="add_profile_methods">
