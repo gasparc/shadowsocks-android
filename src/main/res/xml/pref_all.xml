@@ -45,13 +45,11 @@
 					android:summary="@string/port_summary"
 					android:title="@string/port">
 			</com.github.shadowsocks.preferences.SummaryEditTextPreference>
-			<com.github.shadowsocks.preferences.SummaryListPreference
-					android:defaultValue="rc4"
+			<com.github.shadowsocks.preferences.SummaryEditTextPreference
+					android:defaultValue=""
 					android:key="encMethod"
-					android:entries="@array/enc_method_entry"
-					android:entryValues="@array/enc_method_value"
 					android:title="@string/enc_method">
-			</com.github.shadowsocks.preferences.SummaryListPreference>			
+			</com.github.shadowsocks.preferences.SummaryEditTextPreference>			
 			<com.github.shadowsocks.preferences.PasswordEditTextPreference
 					android:inputType="textPassword"
 					android:defaultValue=""

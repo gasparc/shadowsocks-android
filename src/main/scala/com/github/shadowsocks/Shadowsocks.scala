@@ -158,7 +158,7 @@ object Shadowsocks {
       case Key.remotePort => updateSummaryEditTextPreference(pref, profile.remotePort.toString)
       case Key.localPort => updateSummaryEditTextPreference(pref, profile.localPort.toString)
       case Key.sitekey => updatePasswordEditTextPreference(pref, profile.password)
-      case Key.encMethod => updateListPreference(pref, profile.method)
+      case Key.encMethod => updateSummaryEditTextPreference(pref, profile.method)
       case Key.isGFWList => updateCheckBoxPreference(pref, profile.chnroute)
       case Key.isGlobalProxy => updateCheckBoxPreference(pref, profile.global)
       case Key.isTrafficStat => updateCheckBoxPreference(pref, profile.traffic)
