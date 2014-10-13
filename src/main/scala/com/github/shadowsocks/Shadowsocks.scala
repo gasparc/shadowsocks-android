@@ -51,6 +51,7 @@ import android.net.{Uri, VpnService}
 import android.os._
 import android.preference._
 import android.util.{DisplayMetrics, Log}
+import java.util.Locale
 import android.view._
 import android.webkit.{WebView, WebViewClient}
 import android.widget._
@@ -964,7 +965,11 @@ class Shadowsocks
   private def showHowTo() {
 
     val web = new WebView(this)
-    web.loadUrl("file:///android_asset/pages/howto.html")
+    var url = "file:///android_asset/pages/howto.html";
+	if (Locale.getDefault().getLanguage().equals("es")) {
+	    url = "file:///android_asset/pages/howto_es.html";
+	}
+	web.loadUrl(url);
     web.setWebViewClient(new WebViewClient() {
       override def shouldOverrideUrlLoading(view: WebView, url: String): Boolean = {
         startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse(url)))
@@ -981,7 +986,7 @@ class Shadowsocks
     }
 
     new AlertDialog.Builder(this)
-      .setTitle("How to use?")
+      .setTitle(getString(R.string.howto))
       .setCancelable(false)
       .setNegativeButton(getString(R.string.ok_iknow), new DialogInterface.OnClickListener() {
       override def onClick(dialog: DialogInterface, id: Int) {
