@@ -439,7 +439,7 @@ class Shadowsocks
 
   override def setContentView(layoutResId: Int) {
     drawer.setContentView(layoutResId)
-    initAdView()
+    //initAdView()
     onContentChanged()
   }
 
