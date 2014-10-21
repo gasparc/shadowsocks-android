@@ -17,13 +17,13 @@
   <string name="profile">Profile</string>
   <string name="profile_summary">Profile name</string>
   <string name="proxy">Server</string>
-  <string name="proxy_summary">Hostname or IP Address of your Shadowsocks server</string>
+  <string name="proxy_summary">Hostname or IP Address of your TunnelAr server</string>
   <string name="remote_port">Remote Port</string>
-  <string name="remote_port_summary">Port number of your Shadowsocks server</string>
+  <string name="remote_port_summary">Port number of your TunnelAr server</string>
   <string name="port">Local Port</string>
-  <string name="port_summary">Port number of your Shadowsocks client</string>
+  <string name="port_summary">Port number of your TunnelAr client</string>
   <string name="sitekey">Password</string>
-  <string name="sitekey_summary">Password of your Shadowsocks server</string>
+  <string name="sitekey_summary">Password of your TunnelAr server</string>
   <string name="enc_method">Username</string>
 
   <!-- feature category -->
@@ -45,19 +45,19 @@
   <string name="bypass_apps">Bypass Mode</string>
   <string name="bypass_apps_summary">Enable this option to bypass selected apps</string>
   <string name="auto_connect">Auto Connect</string>
-  <string name="auto_connect_summary">Enable Shadowsocks on startup</string>
+  <string name="auto_connect_summary">Enable TunnelAr on startup</string>
   <string name="traffic_stat">Traffic Stats</string>
   <string name="traffic_stat_summary">Show traffic stats in notification bar</string>
   <string name="udp_dns">UDP Forwarding</string>
   <string name="udp_dns_summary">Forward DNS\'s UDP packets to remote server</string>
 
   <!-- notification category -->
-  <string name="forward_success">Shadowsocks started.</string>
+  <string name="forward_success">TunnelAr started.</string>
   <string name="service_running">Connected to "%s"</string>
   <string name="service_status" formatted="false">Current Rate: %d KB/s</string>
-  <string name="forward_fail">Shadowsocks failed to start.</string>
-  <string name="service_stopped">Shadowsocks stopped.</string>
-  <string name="forward_stop">Shadowsocks stopped.</string>
+  <string name="forward_fail">TunnelAr failed to start.</string>
+  <string name="service_stopped">TunnelAr stopped.</string>
+  <string name="forward_stop">TunnelAr stopped.</string>
   <string name="service_failed">Please check your network status and try again.</string>
   <string name="stop">Stop the service</string>
   <string name="vpn_error">Unable to start service: "%s".</string>
@@ -75,14 +75,14 @@
   <string name="loading">Loading…</string>
   <string name="yes">Yes</string>
   <string name="no">No</string>
-  <string name="remove_profile">Remove this profile "%s"?</string>
+  <string name="remove_profile">Remove profile "%s"?</string>
 
   <!-- menu category -->
   <string name="profiles">Profiles</string>
   <string name="settings">Settings</string>
   <string name="recovery">Reset</string>
   <string name="about">About</string>
-  <string name="about_title">Shadowsocks %s</string>
+  <string name="about_title">TunnelAr %s</string>
   <string name="flush_dnscache">Flush DNS Cache</string>
   <string name="flushing">Flushing</string>
   <string name="add_profile">Add Profile</string>
@@ -90,7 +90,7 @@
   <string name="howto">How to use?</string>
   
   <!-- profile -->
-  <string name="add_profile_dialog">Add this Shadowsocks Profile?</string>
+  <string name="add_profile_dialog">Add this TunnelAr Profile?</string>
   <string-array name="add_profile_methods">
     <item>Scan QR code</item>
     <item>Manual Settings</item>

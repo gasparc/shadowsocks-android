@@ -78,7 +78,7 @@
   <string name="settings">Configuraciones</string>
   <string name="recovery">Eliminar</string>
   <string name="about">Acerca de</string>
-  <string name="about_title">TunnelAr %s</string>
+  <string name="about_title">TunnelAr based on Shadowsocks %s</string>
   <string name="flush_dnscache">Vaciar el caché DNS</string>
   <string name="flushing">Borrando</string>
   <string name="add_profile">Agregar Perfil</string> 
