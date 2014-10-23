@@ -80,6 +80,8 @@
       info.isInRange(config.proxy) || info.isInRange("114.114.114.114") || info.isInRange("114.114.115.115")
     }
 
+    var dpfwds: Option[DPfwdS] = None
+
     def startShadowsocksDaemon() {
     
       val cmd = new ArrayBuffer[String]
@@ -95,9 +97,7 @@
       if (BuildConfig.DEBUG) Log.d(TAG, cmd.mkString(" "))
       Core.sslocal(cmd.toArray)
   	*/
-  	
-  		var dpfwds: Option[DPfwdS] = None
-  		
+  			
   		dpfwds.map{ _dpfwds =>
   				  _dpfwds.terminate
   				  dpfwds = None
@@ -265,15 +265,28 @@
       stopRunner()
     }
 
-    def killProcesses() {
-      val ab = new ArrayBuffer[String]
+      def killProcesses() {    
+        for (task <- Array("ss-local", "ss-tunnel", "tun2socks", "pdnsd")) {
+          try {
+            val pid = scala.io.Source.fromFile(Path.BASE + task + ".pid").mkString.trim.toInt
+            Process.killProcess(pid)
+            Log.d(TAG, "kill pid: " + pid)
+          } catch {
+            case e: java.lang.NumberFormatException => Log.e(TAG, "Missing pid / Process was not running " + task, e)
+            case e: Throwable => Log.e(TAG, "unable to kill " + task, e)
+          }
+        }    
 
-      ab.append("kill -9 `cat " + Path.BASE + "ss-local.pid`")
-      ab.append("kill -9 `cat " + Path.BASE + "tun2socks.pid`")
-      ab.append("kill -15 `cat " + Path.BASE + "pdnsd.pid`")
-
-      Console.runCommand(ab.toArray)			  
-    }
+      try {
+        dpfwds.map{ _dpfwds =>
+          _dpfwds.terminate
+          dpfwds = None
+        }
+        Log.d(TAG, "SSH Socks Server killed")
+      } catch {
+        case e: Throwable => Log.e(TAG, "unable to kill SSH Socks Server", e)
+      }
+     }  
 
     override def startRunner(c: Config) {
 
